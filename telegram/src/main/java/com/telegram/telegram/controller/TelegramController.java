@@ -19,24 +19,27 @@ public class TelegramController {
     @Autowired
     private TelegramBot telegramBot;
 
+    private static final String mockUrl = "https://dfhajuscyucpz.cloudfront.net/stage/khqr/market/bjpa3/inv-242210006747648.png";
+    private static final String mockContent = "{\n" +
+            "    \"order_reference_no\": \"INV-242210006742312\",\n" +
+            "    \"invoice_id\": \"INV-242210006742312\",\n" +
+            "    \"amount\": \"99.0\",\n" +
+            "    \"currency\": \"USD\",\n" +
+            "    \"merchant_name\": \"តាំងហៃ\",\n" +
+            "    \"integration_type\": \"MOBAPP\",\n" +
+            "    \"platform\": \"MARKET\",\n" +
+            "    \"item_name\": null\n" +
+            "}";
+
     @PostMapping("/group")
     public void groupBroadcast(@RequestBody BroadcastRequestVO broadcastRequestVO) {
-        this.telegramImageCaption.broadcast(broadcastRequestVO.getUrl(), broadcastRequestVO.getContent());
+        String url = broadcastRequestVO.getUrl().isEmpty() ? mockUrl : broadcastRequestVO.getUrl();
+        String content = broadcastRequestVO.getContent().isEmpty() ? mockContent : broadcastRequestVO.getContent();
+        this.telegramImageCaption.broadcast(url, content);
     }
 
     @PostMapping("/channel")
     public void channelBroadcast(@RequestBody BroadcastRequestVO broadcastRequestVO) {
-        String mockUrl = "https://dfhajuscyucpz.cloudfront.net/stage/khqr/market/bjpa3/inv-242210006747648.png";
-        String mockContent = "{\n" +
-                "    \"order_reference_no\": \"INV-242210006742312\",\n" +
-                "    \"invoice_id\": \"INV-242210006742312\",\n" +
-                "    \"amount\": \"99.0\",\n" +
-                "    \"currency\": \"USD\",\n" +
-                "    \"merchant_name\": \"តាំងហៃ\",\n" +
-                "    \"integration_type\": \"MOBAPP\",\n" +
-                "    \"platform\": \"MARKET\",\n" +
-                "    \"item_name\": null\n" +
-                "}";
         String url = broadcastRequestVO.getUrl().isEmpty() ? mockUrl : broadcastRequestVO.getUrl();
         String content = broadcastRequestVO.getContent().isEmpty() ? mockContent : broadcastRequestVO.getContent();
         this.telegramBot.sendImageToTelegram(url, content);
